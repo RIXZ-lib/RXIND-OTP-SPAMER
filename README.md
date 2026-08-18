@@ -1,6 +1,6 @@
-# RXIND OTP Spammer is a Python-based tool for education and security testing of authentication systems This tool sends an OTP request 
+#RXIND OTP Spammer is a Python-based tool for education and security testing of authentication systems This tool sends an OTP request 
 
-# ⚠️ Disclaimer: This tool is created for educational and ethical hacking purposes. Its use for spam, harassment, or other illegal activities is the sole responsibility of the user; the creator is not liable for any misuse. Use only on systems you own or have explicit permission to access.
+#⚠️ Disclaimer: This tool is created for educational and ethical hacking purposes. Its use for spam, harassment, or other illegal activities is the sole responsibility of the user; the creator is not liable for any misuse. Use only on systems you own or have explicit permission to access.
 
 # Installation in termux
 
