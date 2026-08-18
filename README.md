@@ -4,13 +4,13 @@ RXIND OTP Spammer is a Python-based tool for education and security testing of a
 
 # Installation in termux
 
-termux-setup-storage
+'''bash termux-setup-storage
 pkg update && pkg upgrade -y
 pkg install python git -y
 git clone https://github.com/RIXZ-lib/RXIND-OTP-SPAMER.git
 cd RXIND-OTP-SPAMER
 pip install -r requirements.txt
-python main.py
+python main.py '''
 
 # Installation in windows
 
