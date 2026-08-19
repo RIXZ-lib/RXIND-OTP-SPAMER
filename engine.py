@@ -626,7 +626,7 @@ def run_infinite_loop(target=None, callback=None):
     print(f"{Fore.CYAN}Memulai spam menggunakan {Fore.WHITE}{total_apis}{Fore.CYAN} API{Style.RESET_ALL}")
     print()
     
-    print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Menjalankan Infinite Loop (delay 60 detik)...")
+    print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Menjalankan Infinite Loop (delay 5 detik)...")
     
     if target is None:
         target = input(f"{Fore.WHITE}Nomor target (08xx / +62xx): {Style.RESET_ALL}").strip()
@@ -688,9 +688,9 @@ def run_infinite_loop(target=None, callback=None):
                 
             print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Round {round_count} selesai. Sukses: {success_count}/{total_targets}")
             print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Total: success={total_success} | fail={total_fail}")
-            print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Menunggu 60 detik...")
+            print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Menunggu 5 detik...")
             
-            for _ in range(60):
+            for _ in range(5):
                 if stop_flag:
                     break
                 time.sleep(1)

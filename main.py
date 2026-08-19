@@ -248,138 +248,54 @@ def countdown_effect(duration=3):
         time.sleep(1)
     print('\r' + ' ' * 10 + '\r', end='')
 
-# 17. Matrix Rain
-class MatrixRain:
-    def __init__(self):
-        try:
-            self.width = shutil.get_terminal_size().columns
-            self.height = shutil.get_terminal_size().lines
-        except:
-            self.width = 80
-            self.height = 24
-        self.width = max(40, self.width)
-        self.height = max(10, self.height)
-        self.columns = []
-        self.chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()'
-        self.init_columns()
+# ============ LOADING ANIMATION ============
+def matrix_loading(duration=5):
+    clear()
     
-    def init_columns(self):
-        self.columns = []
-        for x in range(self.width):
-            length = random.randint(5, 15)
-            col = {
-                'x': x,
-                'y': random.randint(-self.height, 0),
-                'speed': random.uniform(0.5, 1.5),
-                'length': length,
-                'chars': [random.choice(self.chars) for _ in range(length)],
-                'bright_pos': random.randint(0, length-1)
-            }
-            self.columns.append(col)
+    # ===== BANNER KECIL =====
+    print(f"{Fore.CYAN}┌────────────────────────────────────────────────────────────┐{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}│{Style.RESET_ALL}  {Fore.YELLOW}⛧ RXIND OTP SPAMMER ⛧{Style.RESET_ALL}                         {Fore.CYAN}│{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}│{Style.RESET_ALL}  {Fore.WHITE}Version 2.0 | 60+ APIs{Style.RESET_ALL}                    {Fore.CYAN}│{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}└────────────────────────────────────────────────────────────┘{Style.RESET_ALL}")
+    print()
     
-    def update(self):
-        for col in self.columns:
-            col['y'] += col['speed'] * 0.4
-            if col['y'] > self.height + col['length']:
-                col['y'] = random.randint(-self.height, 0)
-                col['length'] = random.randint(5, 15)
-                col['chars'] = [random.choice(self.chars) for _ in range(col['length'])]
-                col['speed'] = random.uniform(0.5, 1.5)
-                col['bright_pos'] = random.randint(0, col['length']-1)
-            if random.random() < 0.02:
-                for i in range(len(col['chars'])):
-                    if random.random() < 0.2:
-                        col['chars'][i] = random.choice(self.chars)
+    # ===== SPINNER + PROGRESS BAR =====
+    chars = ['◐', '◓', '◑', '◒']
+    for i in range(101):
+        bar = "█" * (i // 2) + "░" * (50 - i // 2)
+        spinner = chars[i % 4]
+        
+        if i < 30:
+            color = Fore.MAGENTA
+            status = "INITIALIZING"
+        elif i < 60:
+            color = Fore.CYAN
+            status = "LOADING"
+        elif i < 85:
+            color = Fore.YELLOW
+            status = "PREPARING"
+        else:
+            color = Fore.GREEN
+            status = "FINALIZING"
+        
+        sys.stdout.write(f'\r  {color}{spinner} [{bar}] {i}%  {status}{Style.RESET_ALL}')
+        sys.stdout.flush()
+        time.sleep(duration / 100)
     
-    def render(self, overlay_lines=None):
-        sys.stdout.write('\033[?25l')
-        sys.stdout.write('\033[H')
-        screen = [[' ' for _ in range(self.width)] for _ in range(self.height)]
-        
-        for col in self.columns:
-            x = col['x']
-            start_y = int(col['y'])
-            for i in range(col['length']):
-                y = start_y + i
-                if 0 <= y < self.height and 0 <= x < self.width:
-                    char = col['chars'][i % len(col['chars'])]
-                    if i == col['bright_pos']:
-                        color = Fore.GREEN + Style.BRIGHT
-                    elif i < col['bright_pos'] + 3 and i > col['bright_pos'] - 2:
-                        color = Fore.GREEN
-                    else:
-                        color = Fore.GREEN + Style.DIM
-                    screen[y][x] = color + char + Style.RESET_ALL
-        
-        for y in range(self.height):
-            print(''.join(screen[y]))
-        
-        if overlay_lines:
-            filtered = [line for line in overlay_lines if line.strip()]
-            overlay_height = len(filtered)
-            start_y = (self.height - overlay_height) // 2
-            for i, line in enumerate(filtered):
-                if line.strip():
-                    clean_line = line
-                    x_pos = (self.width - len(clean_line)) // 2
-                    if x_pos < 0:
-                        x_pos = 0
-                    sys.stdout.write(f'\033[{start_y + i};{x_pos}H')
-                    print(clean_line, end='')
-        
-        sys.stdout.write('\033[?25h')
-
-def matrix_loading(duration=4):
-    matrix = MatrixRain()
-    ascii_rxind = [
-        "    ██████╗ ██╗  ██╗██╗███╗   ██╗██████╗ ",
-        "    ██╔══██╗╚██╗██╔╝██║████╗  ██║██╔══██╗",
-        "    ██████╔╝ ╚███╔╝ ██║██╔██╗ ██║██║  ██║",
-        "    ██╔══██╗ ██╔██╗ ██║██║╚██╗██║██║  ██║",
-        "    ██║  ██║██╔╝ ██╗██║██║ ╚████║██████╔╝",
-        "    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝ "
-    ]
-    start_time = time.time()
-    tick = 0
-    while time.time() - start_time < duration:
-        tick += 0.05
-        matrix.update()
-        colored_ascii = []
-        for line in ascii_rxind:
-            colored_line = ""
-            for i, char in enumerate(line):
-                if char != ' ':
-                    color = rgb_color(tick, i * 0.1)
-                    colored_line += f"{color}{char}{Style.RESET_ALL}"
-                else:
-                    colored_line += " "
-            colored_ascii.append(colored_line)
-        progress = (time.time() - start_time) / duration
-        dots = "." * (int((time.time() - start_time) * 2) % 4)
-        loading_text = f"LOADING{dots}"
-        loading_color = rgb_color(tick, 2)
-        bar_length = min(40, matrix.width - 20)
-        filled = int(bar_length * progress)
-        bar = "█" * filled + "░" * (bar_length - filled)
-        bar_color = rgb_color(tick, 3)
-        status_color = rgb_color(tick, 4)
-        status_text = "INITIALIZING" if progress < 0.3 else "LOADING" if progress < 0.6 else "PREPARING" if progress < 0.8 else "READY"
-        overlay = [
-            "",
-            *colored_ascii,
-            "",
-            f"{loading_color}{loading_text}{Style.RESET_ALL}",
-            "",
-            f"{bar_color}[{bar}] {int(progress * 100)}%{Style.RESET_ALL}",
-            "",
-            f"{status_color}{'─' * 20}{Style.RESET_ALL}",
-            f"{status_color}  {status_text}  {Style.RESET_ALL}",
-            f"{status_color}{'─' * 20}{Style.RESET_ALL}",
-        ]
-        matrix.render(overlay)
-        time.sleep(0.03)
-    sys.stdout.write('\033[?25h')
-    sys.stdout.flush()
+    print()
+    print()
+    
+    # ===== EFEK SELESAI (BLINK) =====
+    for _ in range(5):
+        sys.stdout.write(f'\r{Fore.GREEN}✅ SYSTEM READY!{Style.RESET_ALL}')
+        sys.stdout.flush()
+        time.sleep(0.15)
+        sys.stdout.write(f'\r{Fore.CYAN}✅ SYSTEM READY!{Style.RESET_ALL}')
+        sys.stdout.flush()
+        time.sleep(0.15)
+    
+    print()
+    time.sleep(0.5)
 
 def loading_animation(text="PROCESSING", duration=2):
     chars = ['◐', '◓', '◑', '◒']
